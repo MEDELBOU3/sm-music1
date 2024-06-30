@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <h1>SM_<i class="fas fa-music"></i>_music</h1>
+            <h2>Playlist</h2>
+            <ul id="playlist">
+                <!-- عناصر قائمة التشغيل ستضاف هنا -->
+            </ul>
+            <button id="load-more-playlist">Load More</button>
+            <div id="login-section">
+                <a href="http://localhost:5000"><i class='bx bx-log-in'></i> Log In</a>
+            </div>
+        </div>
+        
+        <div class="main">
+            <div id="header" class="header">
+                <nav class="navbar">
+                    <div class="logo">
+                        <h1>SM_<i class="fas fa-music"></i>_music</h1>
+                    </div>
+                    <ul class="nav-links">
+                        <li><a href="#genres">GENRES</a></li>
+                        <li><a href="#">ALBUMS</a></li>
+                        <li><a href="#popular-songs">SONGS</a></li>
+                        <li><a href="#popular-artists">ARTISTS</a></li>
+                        <li><a href="#comments-section">REACTION</a></li>
+                    </ul>
+                    <div class="burger">
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                    </div>
+                </nav>
+                <h1 id="current-track-title">Track Title</h1>
+                <p id="current-track-artist">Artist</p>
+                <audio id="audio-player" controls>
+                    <source id="audio-source" src="" type="audio/mpeg" >
+                    Your browser does not support the audio element.
+                </audio>
+                
+                <div class="controls">
+                    <button id="prev-btn"><i class="fas fa-backward"></i></button>
+                    <button id="play-btn"><i class="fas fa-play"></i></button>
+                    <button id="pause-btn"><i class="fas fa-pause"></i></button>
+                    <button id="next-btn"><i class="fas fa-forward"></i></button>
+                </div>
+                <div id="ratings-section">
+                    <h3 style="position: relative; z-index: 1;">Rate this Song</h3>
+                    <div id="ratings" style="font-size: 25px; filter: drop-shadow(0 0 10px #000); color:rgb(0, 255, 170); position: relative; z-index: 1;">
+                        <span class="star" data-value="1">&#9733;</span>
+                        <span class="star" data-value="2">&#9733;</span>
+                        <span class="star" data-value="3">&#9733;</span>
+                        <span class="star" data-value="4">&#9733;</span>
+                        <span class="star" data-value="5">&#9733;</span>
+                    </div>
+                    <p id="average-rating" style="color: #ccc; font-size: 16px; font-family:'Anton', sans-serif; filter: drop-shadow(0 0 10px #000); position: relative; z-index: 1;">Average Rating: 0</p>
+                </div>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search for songs or artists">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <div id="lyrics" class="lyrics">
+                <h2>Lyrics</h2>
+                <p id="lyrics-content" style="margin: 0 auto; line-height: 2;  align-items: center; text-align:center;">Select a track to see the lyrics</p>
+            </div>
+            <div class="content">
+                <h2>Genres</h2>
+                <div id="genres" class="genre-list">
+                    <!-- أنواع الأغاني ستضاف هنا -->
+                </div>
+                <h2>Albums</h2>
+                <div id="albums"></div>
+                
+                <!--Songs-->
+                <ul id="playlist"></ul>
+                <button id="load-more-playlist">Load More</button>
+            
+                <h2>Popular Songs</h2>
+                <div id="popular-songs" class="song-list">
+                    <!-- الأغاني الشائعة ستضاف هنا -->
+                </div>
+                <h2>Popular Artists</h2>
+                <div id="popular-artists" class="artist-list">
+                    <!-- الفنانين الشائعين سيضافون هنا -->
+                </div>
+                
+                <div id="recommendations" class="section">
+                    <h2>Recommended for You</h2>
+                    <div id="recommendation-list"></div>
+                </div>
+                
+                <!--Comments&Rating-->
+                <div id="comments-section">
+                    <h3>Comments</h3>
+                    <div id="comments-list"></div>
+                    <div class="comments-ms">
+                        <textarea id="comment-input" placeholder="Add a comment..."></textarea>
+                        <button id="submit-comment">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getQueryParams() {
+            const params = {};
+            let e, r = /([^&;=]+)=?([^&;]*)/g,
+                q = window.location.search.substring(1);
+            while (e = r.exec(q)) {
+                params[e[1]] = decodeURIComponent(e[2]);
+            }
+            return params;
+        }
+
+        const params = getQueryParams();
+
+        if (params.access_token) {
+            fetch('https://api.spotify.com/v1/me', {
+                headers: {
+                    'Authorization': `Bearer ${params.access_token}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('user-info').innerText = `Logged in as ${data.display_name}`;
+            });
+        } else {
+            document.getElementById('user-info').innerText = 'Error: No access token found';
+        }
+
+        const burger = document.querySelector('.burger');
+        const navLinks = document.querySelector('.nav-links');
+
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            burger.classList.toggle('toggle');
+        });
+    </script>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
+
+
+

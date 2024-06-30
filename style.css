@@ -1,0 +1,166 @@
+
+.background-selection {
+    text-align: center;
+}
+
+.background-options {
+    display: flex;
+    justify-content: center;
+}
+
+.background-option {
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.background-option:hover {
+    border: 2px solid #000;
+}
+
+.chat-section {
+    margin: 0 auto;
+    padding: 15px;
+    width: 90%;
+    margin: 15px auto;
+    border-radius: 5px;
+    background-color: rgba(51, 51, 51, 0.342);
+}
+
+
+
+
+
+main{
+    background-color: rgba(48, 48, 48, 0.5);
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+  }
+.room-creation, .rooms-list, .chat-section, .video-section {
+    margin-bottom: 20px;
+}
+
+.room-creation input, #message-input {
+    width: calc(100% - 72px);
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+}
+
+.room-creation button, #send-message, #start-call, #share-screen, #start-voice-chat, #end-call {
+    padding: 10px 20px;
+    margin: 10px auto;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 4px;
+    background-color: #19dd5e;
+    color: #fff;
+    cursor: pointer;
+}
+
+.room-creation button:hover, #send-message:hover, #start-call:hover, #share-screen:hover, #start-voice-chat, #end-call:hover {
+    background-color: #19dd5e;
+    
+}
+
+.rooms-list h2 {
+    margin-bottom: 10px;
+}
+
+.rooms-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.rooms-list li {
+    padding: 10px;
+    width: auto;
+    margin: 0 auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: #333;
+}
+
+.rooms-list li:hover {
+    background-color: #383838;
+}
+
+
+
+#chat-room.hidden, #video-section.hidden {
+    display: none;
+    
+}
+
+#chat-room-name {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+
+.messages {
+    flex-grow: 1;
+    background-color: #0f0f0f56; /* لون خلفية الرسالة */
+    color: white; /* لون النص */
+    padding: 10px; /* مساحة داخلية */
+    border-radius: 5px; /* جعل الحواف مستديرة */
+    width: auto; /* عرض أقصى */
+    height: 400px;
+
+    
+    
+}
+
+.messages p {
+    max-width: 60%;
+    background-color: #03633388;
+    padding: 10px;
+    margin: 10px ;
+    border-top-left-radius: 220px;
+    border-top-right-radius: 220px;
+    border-bottom-right-radius: 220px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2em;
+}
+
+#video-section
+video {
+    width: 48%;
+    border: 1px solid #ccc;
+   border-radius: 2px;
+}
+
+/* تنسيق قسم الأفاتار */
+.avatar-selection {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.avatar-selection label {
+    margin-right: 10px;
+}
+
+.avatar-selection select {
+    margin-right: 10px;
+}
+
+.avatar-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
